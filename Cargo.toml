@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "rustapp",
+    "winappsdk"
+]
+resolver = "2"
