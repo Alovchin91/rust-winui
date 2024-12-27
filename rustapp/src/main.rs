@@ -5,11 +5,14 @@ mod main_window;
 mod winrt;
 mod winui;
 
-use app::App;
-use simple_logger::SimpleLogger;
+use winappsdk::Microsoft::UI::Xaml::{
+    Application, ApplicationInitializationCallback, ApplicationInitializationCallbackParams,
+    IApplication_Impl, UnhandledExceptionEventHandler,
+};
 use windows::core::Result;
 
-use winappsdk::Microsoft::UI::Xaml::{Application, ApplicationInitializationCallback};
+use app::App;
+use simple_logger::SimpleLogger;
 use winui::WinUIDependency;
 
 fn main() -> Result<()> {
@@ -27,11 +30,27 @@ fn main() -> Result<()> {
         winui_dependency.package_full_name()
     );
 
-    Application::Start(&ApplicationInitializationCallback::new(|_| {
-        log::debug!("Application::Start");
-        let _app = App::new()?;
-        Ok(())
-    }))?;
+    Application::Start(&ApplicationInitializationCallback::new(app_start))?;
+
+    Ok(())
+}
+
+fn app_start(_: Option<&ApplicationInitializationCallbackParams>) -> Result<()> {
+    log::debug!("Application::Start");
+
+    let app = App::new()?;
+    app.UnhandledException(Some(&UnhandledExceptionEventHandler::new(
+        |_sender, args| {
+            match args {
+                Some(args) => {
+                    log::error!("Unhandled exception: {}", args.Exception()?);
+                    log::error!("{}", args.Message()?);
+                }
+                None => log::error!("Unhandled exception occurred"),
+            }
+            Ok(())
+        },
+    )))?;
 
     Ok(())
 }
