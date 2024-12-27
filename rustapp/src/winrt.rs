@@ -1,5 +1,6 @@
 use windows::{
-    core::Result,
+    core::{Interface, Result, HSTRING},
+    Foundation::{IReference, PropertyValue},
     Win32::System::WinRT::{RoInitialize, RoUninitialize, RO_INIT_MULTITHREADED},
 };
 
@@ -15,4 +16,9 @@ impl Drop for RoInitT {
         log::debug!("RoUninitialize");
         //unsafe { RoUninitialize() };
     }
+}
+
+#[allow(non_snake_case)]
+pub(crate) fn HStringReference(text: &HSTRING) -> Result<IReference<HSTRING>> {
+    PropertyValue::CreateString(text)?.cast()
 }
