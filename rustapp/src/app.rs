@@ -14,7 +14,9 @@ use winappsdk::{
     Windows::UI::Xaml::Interop::TypeName,
 };
 use windows::{
-    core::{implement, Array, ComObject, IInspectable, Interface, Result, Type, HSTRING},
+    core::{
+        implement, Array, ComObject, IInspectable, Interface, InterfaceRef, Result, Type, HSTRING,
+    },
     Foundation::{EventRegistrationToken, TypedEventHandler},
 };
 
@@ -27,14 +29,14 @@ use crate::main_window::MainWindow;
     IApplicationOverrides,
     IXamlMetadataProvider
 )]
-pub(crate) struct App {
-    base: RefCell<Option<Application>>,
+pub(crate) struct App<'a> {
+    base: RefCell<Option<InterfaceRef<'a, Application>>>,
     provider: RefCell<Option<XamlControlsXamlMetaDataProvider>>,
     window: RefCell<Option<MainWindow>>,
 }
 
-impl App {
-    pub(crate) fn new() -> Result<ComObject<App>> {
+impl<'a> App<'a> {
+    pub(crate) fn new() -> Result<ComObject<App<'a>>> {
         let app = ComObject::new(App {
             base: RefCell::new(None),
             provider: RefCell::new(None),
@@ -51,7 +53,7 @@ impl App {
             )
             .and_then(|| Type::from_abi(result__))
         })?;
-        app.init(application);
+        app.init(InterfaceRef::from_interface(&application));
         Ok(app)
     }
 
@@ -63,7 +65,7 @@ impl App {
         SHARED.call(callback)
     }
 
-    fn init(&self, app: Application) {
+    fn init(&self, app: InterfaceRef<'a, Application>) {
         self.base.borrow_mut().replace(app);
     }
 
@@ -87,7 +89,7 @@ impl App {
     }
 }
 
-impl IApplication_Impl for App_Impl {
+impl IApplication_Impl for App_Impl<'_> {
     fn Resources(&self) -> Result<ResourceDictionary> {
         self.with_base(move |base| base.Resources())
     }
@@ -140,7 +142,7 @@ impl IApplication_Impl for App_Impl {
     }
 }
 
-impl IApplication2_Impl for App_Impl {
+impl IApplication2_Impl for App_Impl<'_> {
     fn ResourceManagerRequested(
         &self,
         handler: Option<&TypedEventHandler<IInspectable, ResourceManagerRequestedEventArgs>>,
@@ -153,7 +155,7 @@ impl IApplication2_Impl for App_Impl {
     }
 }
 
-impl IApplication3_Impl for App_Impl {
+impl IApplication3_Impl for App_Impl<'_> {
     fn DispatcherShutdownMode(&self) -> Result<DispatcherShutdownMode> {
         self.with_base(move |base: &Application| base.DispatcherShutdownMode())
     }
@@ -163,7 +165,7 @@ impl IApplication3_Impl for App_Impl {
     }
 }
 
-impl IApplicationOverrides_Impl for App_Impl {
+impl IApplicationOverrides_Impl for App_Impl<'_> {
     fn OnLaunched(&self, _: Option<&LaunchActivatedEventArgs>) -> Result<()> {
         log::debug!("App::OnLaunched");
 
@@ -186,7 +188,7 @@ impl IApplicationOverrides_Impl for App_Impl {
     }
 }
 
-impl IXamlMetadataProvider_Impl for App_Impl {
+impl IXamlMetadataProvider_Impl for App_Impl<'_> {
     fn GetXamlType(&self, type_name: &TypeName) -> Result<IXamlType> {
         log::debug!("App::GetXamlType");
         self.with_provider(|p| p.GetXamlType(type_name))
@@ -201,7 +203,7 @@ impl IXamlMetadataProvider_Impl for App_Impl {
     }
 }
 
-impl Drop for App {
+impl Drop for App<'_> {
     fn drop(&mut self) {
         log::debug!("App::drop");
     }
