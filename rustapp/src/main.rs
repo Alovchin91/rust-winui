@@ -5,6 +5,7 @@ mod main_window;
 mod winrt;
 mod winui;
 
+use app::App;
 use simple_logger::SimpleLogger;
 use windows::core::Result;
 
@@ -22,13 +23,13 @@ fn main() -> Result<()> {
     let winui_dependency = WinUIDependency::initialize_default()?;
 
     log::debug!(
-        "WinUI package full name: {}",
+        "WinUI package full name: {:?}",
         winui_dependency.package_full_name()
     );
 
     Application::Start(&ApplicationInitializationCallback::new(|_| {
         log::debug!("Application::Start");
-        let _app = app::create_app()?;
+        let _app = App::new()?;
         Ok(())
     }))?;
 

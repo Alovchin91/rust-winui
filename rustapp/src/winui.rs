@@ -2,7 +2,7 @@ use std::sync::OnceLock;
 use windows::{
     core::{Result, HSTRING, PWSTR},
     Win32::{
-        Foundation::E_UNEXPECTED,
+        Foundation::{ERROR_NO_UNICODE_TRANSLATION, E_UNEXPECTED},
         Storage::Packaging::Appx::{
             AddPackageDependency, AddPackageDependencyOptions_None,
             CreatePackageDependencyOptions_None, PackageDependencyLifetimeKind_Process,
@@ -78,9 +78,9 @@ impl WinUIDependency {
         })
     }
 
-    pub(crate) fn package_full_name(&self) -> String {
+    pub(crate) fn package_full_name(&self) -> Result<String> {
         unsafe { self.package_full_name.to_string() }
-            .unwrap_or_else(|_| "unknown package name".to_owned())
+            .map_err(|_| ERROR_NO_UNICODE_TRANSLATION.into())
     }
 
     pub(crate) fn uninitialize(&self) -> Result<()> {
