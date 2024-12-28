@@ -21,7 +21,7 @@ fn main() -> Result<()> {
         .init()
         .expect("failed to initialize the logger");
 
-    let _roinit = winrt::init_apartment()?;
+    winrt::init_apartment(winrt::ApartmentType::SingleThreaded)?;
 
     let winui_dependency = WinUIDependency::initialize_default()?;
 
