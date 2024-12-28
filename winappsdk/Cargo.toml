@@ -36,7 +36,8 @@ windows = { version = "0.58.0", features = [
     "UI",
     "UI_Composition",
     "UI_Core",
-    "UI_Text"
+    "UI_Text",
+    "implement"
 ] }
 windows-core = "0.58.0"
 windows-targets = "0.52.6"

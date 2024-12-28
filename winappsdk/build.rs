@@ -34,7 +34,16 @@ fn main() {
             "Microsoft.Graphics",
             "Microsoft.UI",
             "Microsoft.Windows.ApplicationModel.Resources",
-            "Microsoft.Web.WebView2.Core",
+            // WebView2 is a big part of the API surface
+            "!Microsoft.UI.Xaml.Automation.Peers.IWebView2AutomationPeer",
+            "!Microsoft.UI.Xaml.Automation.Peers.IWebView2AutomationPeerFactory",
+            "!Microsoft.UI.Xaml.Automation.Peers.WebView2AutomationPeer",
+            "!Microsoft.UI.Xaml.Controls.IWebView2",
+            "!Microsoft.UI.Xaml.Controls.IWebView22",
+            "!Microsoft.UI.Xaml.Controls.IWebView2Factory",
+            "!Microsoft.UI.Xaml.Controls.IWebView2Statics",
+            "!Microsoft.UI.Xaml.Controls.WebView2",
+            "!Microsoft.Web.WebView2",
         ];
         windows_bindgen::bindgen(microsoft_args).unwrap();
 
