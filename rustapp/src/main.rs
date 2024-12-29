@@ -9,7 +9,7 @@ use winappsdk::Microsoft::UI::Xaml::{
     Application, ApplicationInitializationCallback, ApplicationInitializationCallbackParams,
     IApplication_Impl, UnhandledExceptionEventHandler,
 };
-use windows::core::Result;
+use windows_core::Result;
 
 use app::App;
 use simple_logger::SimpleLogger;

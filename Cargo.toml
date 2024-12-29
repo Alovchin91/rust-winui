@@ -1,5 +1,10 @@
 [workspace]
 members = [
+    "bindgen",
+    "rustapp",
+    "winappsdk"
+]
+default-members = [
     "rustapp",
     "winappsdk"
 ]

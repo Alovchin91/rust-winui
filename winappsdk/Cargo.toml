@@ -41,7 +41,3 @@ windows = { version = "0.58.0", features = [
 ] }
 windows-core = "0.58.0"
 windows-targets = "0.52.6"
-
-[build-dependencies]
-memmap2 = "0.9.5"
-windows-bindgen = { git = "https://github.com/microsoft/windows-rs.git", tag = "0.60.0" }
