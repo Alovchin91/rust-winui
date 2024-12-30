@@ -3,7 +3,6 @@
 mod app;
 mod main_window;
 mod winrt;
-mod winui;
 
 use winappsdk::Microsoft::UI::Xaml::{
     Application, ApplicationInitializationCallback, ApplicationInitializationCallbackParams,
@@ -13,7 +12,6 @@ use windows_core::Result;
 
 use app::App;
 use simple_logger::SimpleLogger;
-use winui::WinUIDependency;
 
 fn main() -> Result<()> {
     SimpleLogger::new()
@@ -23,12 +21,9 @@ fn main() -> Result<()> {
 
     winrt::init_apartment(winrt::ApartmentType::SingleThreaded)?;
 
-    let winui_dependency = WinUIDependency::initialize_default()?;
+    let winui_dependency = winappsdk::bootstrap::PackageDependency::initialize()?;
 
-    log::debug!(
-        "WinUI package full name: {:?}",
-        winui_dependency.package_full_name()
-    );
+    log::debug!("WinUI initialized: {:?}", winui_dependency);
 
     Application::Start(&ApplicationInitializationCallback::new(app_start))?;
 
