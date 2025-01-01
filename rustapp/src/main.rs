@@ -6,7 +6,7 @@ mod winrt;
 
 use winappsdk::Microsoft::UI::Xaml::{
     Application, ApplicationInitializationCallback, ApplicationInitializationCallbackParams,
-    IApplication_Impl, UnhandledExceptionEventHandler,
+    UnhandledExceptionEventHandler,
 };
 use windows_core::Result;
 
