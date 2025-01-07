@@ -5,12 +5,10 @@ use winappsdk::Microsoft::UI::Xaml::{
     Controls::{HyperlinkButton, StackPanel, TextBlock},
     HorizontalAlignment, Style, VerticalAlignment, Window,
 };
-use windows::{
-    core::{h, Interface, Result},
-    Foundation::Uri,
-};
+use windows::Foundation::Uri;
+use windows_core::{h, Interface, Result};
 
-use crate::winrt::HStringReference;
+use crate::utils::HStringReference;
 
 pub(crate) struct MainWindow {
     window: Window,

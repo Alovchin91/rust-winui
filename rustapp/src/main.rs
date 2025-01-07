@@ -2,7 +2,7 @@
 
 mod app;
 mod main_window;
-mod winrt;
+mod utils;
 
 use winappsdk::Microsoft::UI::Xaml::{
     Application, ApplicationInitializationCallback, ApplicationInitializationCallbackParams,
@@ -19,7 +19,7 @@ fn main() -> Result<()> {
         .init()
         .expect("failed to initialize the logger");
 
-    winrt::init_apartment(winrt::ApartmentType::SingleThreaded)?;
+    winappsdk::init_apartment(winappsdk::ApartmentType::SingleThreaded)?;
 
     let winui_dependency = winappsdk::bootstrap::PackageDependency::initialize()?;
 

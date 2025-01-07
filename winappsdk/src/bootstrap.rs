@@ -1,13 +1,11 @@
 use std::{fmt, sync::OnceLock};
-use windows::{
-    core::{h, Result, HSTRING, PWSTR},
-    Win32::Storage::Packaging::Appx::{
-        AddPackageDependency, AddPackageDependencyOptions_None,
-        CreatePackageDependencyOptions_None, PackageDependencyLifetimeKind_Process,
-        PackageDependencyProcessorArchitectures_None, RemovePackageDependency,
-        TryCreatePackageDependency, PACKAGEDEPENDENCY_CONTEXT, PACKAGE_VERSION, PACKAGE_VERSION_0,
-    },
+use windows::Win32::Storage::Packaging::Appx::{
+    AddPackageDependency, AddPackageDependencyOptions_None, CreatePackageDependencyOptions_None,
+    PackageDependencyLifetimeKind_Process, PackageDependencyProcessorArchitectures_None,
+    RemovePackageDependency, TryCreatePackageDependency, PACKAGEDEPENDENCY_CONTEXT,
+    PACKAGE_VERSION, PACKAGE_VERSION_0,
 };
+use windows_core::{h, Result, HSTRING, PWSTR};
 
 const WINDOWSAPPSDK_RUNTIME_VERSION_UINT64: u64 = 0x1770013E09000000u64;
 const WINDOWSAPPSDK_RUNTIME_PACKAGE_FRAMEWORK_PACKAGEFAMILYNAME: &HSTRING =
