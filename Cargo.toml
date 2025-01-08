@@ -1,11 +1,15 @@
-[workspace]
-members = [
-    "bindgen",
-    "rustapp",
-    "winappsdk"
-]
-default-members = [
-    "rustapp",
-    "winappsdk"
-]
-resolver = "2"
+[package]
+name = "rustapp"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+log = { version = "0.4.22", default-features = false }
+simple_logger = "5.0.0"
+windows = { version = "0.59.0", features = ["Foundation", "Foundation_Collections"] }
+windows-core = "0.59.0"
+winui3 = { git = "https://github.com/Alovchin91/winui3-rs.git", version = "0.106003.0", features = ["UI_Composition", "XamlApp"] }
+
+[build-dependencies]
+embed-manifest = "1.4.0"

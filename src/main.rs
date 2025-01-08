@@ -4,11 +4,11 @@ mod app;
 mod main_window;
 mod utils;
 
-use winappsdk::Microsoft::UI::Xaml::{
+use windows_core::{Ref, Result};
+use winui3::Microsoft::UI::Xaml::{
     Application, ApplicationInitializationCallback, ApplicationInitializationCallbackParams,
     UnhandledExceptionEventHandler,
 };
-use windows_core::Result;
 
 use app::App;
 use simple_logger::SimpleLogger;
@@ -19,9 +19,9 @@ fn main() -> Result<()> {
         .init()
         .expect("failed to initialize the logger");
 
-    winappsdk::init_apartment(winappsdk::ApartmentType::SingleThreaded)?;
+    winui3::init_apartment(winui3::ApartmentType::SingleThreaded)?;
 
-    let winui_dependency = winappsdk::bootstrap::PackageDependency::initialize()?;
+    let winui_dependency = winui3::bootstrap::PackageDependency::initialize()?;
 
     log::debug!("WinUI initialized: {:?}", winui_dependency);
 
@@ -30,13 +30,13 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn app_start(_: Option<&ApplicationInitializationCallbackParams>) -> Result<()> {
+fn app_start(_: Ref<'_, ApplicationInitializationCallbackParams>) -> Result<()> {
     log::debug!("Application::Start");
 
-    let app = App::new()?;
+    let app = App::create()?;
     app.UnhandledException(Some(&UnhandledExceptionEventHandler::new(
         |_sender, args| {
-            match args {
+            match args.as_ref() {
                 Some(args) => {
                     log::error!("Unhandled exception: {}", args.Exception()?);
                     log::error!("{}", args.Message()?);

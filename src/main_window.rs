@@ -1,12 +1,12 @@
 use std::ops::Deref;
 
-use winappsdk::Microsoft::UI::Xaml::{
+use windows::Foundation::Uri;
+use windows_core::{h, Interface, Result};
+use winui3::Microsoft::UI::Xaml::{
     Application,
     Controls::{HyperlinkButton, StackPanel, TextBlock},
     HorizontalAlignment, Style, VerticalAlignment, Window,
 };
-use windows::Foundation::Uri;
-use windows_core::{h, Interface, Result};
 
 use crate::utils::HStringReference;
 
