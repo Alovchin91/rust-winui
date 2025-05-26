@@ -5,11 +5,19 @@ edition = "2021"
 publish = false
 
 [dependencies]
-log = { version = "0.4.22", default-features = false }
-simple_logger = "5.0.0"
-windows = { version = "0.59.0", features = ["Foundation", "Foundation_Collections"] }
-windows-core = "0.59.0"
-winui3 = { git = "https://github.com/Alovchin91/winui3-rs.git", version = "0.106003.0", features = ["UI_Composition", "XamlApp"] }
+log = { version = "0.4.27", default-features = false }
+simple_logger = { version = "5.0.0", default-features = false }
+windows = { version = "0.61.1", features = [
+    "Foundation",
+    "Foundation_Collections",
+    "Win32_System_Console",
+] }
+windows-core = "0.61.2"
+
+[dependencies.winui3]
+git = "https://github.com/Alovchin91/winui3-rs.git"
+version = "0.106.0"
+features = ["XamlApp", "UI_Composition"]
 
 [build-dependencies]
 embed-manifest = "1.4.0"

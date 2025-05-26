@@ -11,13 +11,9 @@ use winui3::Microsoft::UI::Xaml::{
 };
 
 use app::App;
-use simple_logger::SimpleLogger;
 
 fn main() -> Result<()> {
-    SimpleLogger::new()
-        .env()
-        .init()
-        .expect("failed to initialize the logger");
+    simple_logger::init_with_env().expect("failed to initialize the logger");
 
     winui3::init_apartment(winui3::ApartmentType::SingleThreaded)?;
 
