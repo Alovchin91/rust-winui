@@ -1,14 +1,16 @@
 use std::cell::RefCell;
 
 use windows::Foundation::Uri;
-use windows_core::{h, Ref, Result};
+use windows_core::{h, Result, HSTRING};
 use winui3::{
     Microsoft::UI::Xaml::{
-        Application, Controls::XamlControlsResources, LaunchActivatedEventArgs, ResourceDictionary,
+        Application, Controls::XamlControlsResources, LaunchActivatedEventArgs, Markup::IXamlType,
+        ResourceDictionary,
     },
     XamlApp, XamlAppOverrides,
 };
 
+use crate::main_page::MainPage;
 use crate::main_window::MainWindow;
 
 pub(crate) struct App {
@@ -25,11 +27,7 @@ impl App {
 }
 
 impl XamlAppOverrides for App {
-    fn OnLaunched(
-        &self,
-        base: &'_ Application,
-        _: Ref<'_, LaunchActivatedEventArgs>,
-    ) -> Result<()> {
+    fn OnLaunched(&self, base: &Application, _: Option<&LaunchActivatedEventArgs>) -> Result<()> {
         log::debug!("App::OnLaunched");
 
         let resources = base.Resources()?;
@@ -49,6 +47,14 @@ impl XamlAppOverrides for App {
 
         self.window.borrow_mut().replace(window);
         Ok(())
+    }
+
+    fn TryResolveXamlType(&self, full_name: &HSTRING) -> Result<IXamlType> {
+        if full_name == "MyPage" {
+            winui3::XamlCustomType::<MainPage>::new(full_name)
+        } else {
+            Err(windows_core::Error::empty())
+        }
     }
 }
 

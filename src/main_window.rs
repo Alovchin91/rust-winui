@@ -1,14 +1,10 @@
 use std::ops::Deref;
 
-use windows::Foundation::Uri;
-use windows_core::{h, Interface, Result};
-use winui3::Microsoft::UI::Xaml::{
-    Application,
-    Controls::{HyperlinkButton, StackPanel, TextBlock},
-    HorizontalAlignment, Style, VerticalAlignment, Window,
+use windows_core::Result;
+use winui3::{
+    xaml_typename,
+    Microsoft::UI::Xaml::{Controls::Frame, Media::MicaBackdrop, Window},
 };
-
-use crate::utils::HStringReference;
 
 pub(crate) struct MainWindow {
     window: Window,
@@ -23,32 +19,18 @@ impl MainWindow {
 
     #[allow(non_snake_case)]
     pub(crate) fn InitializeComponent(&self) -> Result<()> {
-        let stack_panel = StackPanel::new()?;
-        stack_panel.SetHorizontalAlignment(HorizontalAlignment::Center)?;
-        stack_panel.SetVerticalAlignment(VerticalAlignment::Center)?;
+        self.SetExtendsContentIntoTitleBar(true)?;
+        self.SetSystemBackdrop(&MicaBackdrop::new()?)?;
 
-        let current_app = Application::Current()?;
+        let frame = Frame::new()?;
 
-        let title = TextBlock::new()?;
-        let style: Style = current_app
-            .Resources()?
-            .Lookup(&HStringReference(h!("TitleTextBlockStyle"))?)?
-            .cast()?;
-        title.SetStyle(&style)?;
-        title.SetText(h!("WinUI 3 in Rust! (Without XAML of course)"))?;
-        title.SetHorizontalAlignment(HorizontalAlignment::Center)?;
+        let page_type = xaml_typename("MyPage");
 
-        let hyperlink = HyperlinkButton::new()?;
-        hyperlink.SetContent(&HStringReference(h!("GitHub Project Repository"))?)?;
-        hyperlink.SetNavigateUri(&Uri::CreateUri(h!(
-            "https://github.com/Alovchin91/rust-winui"
-        ))?)?;
-        hyperlink.SetHorizontalAlignment(HorizontalAlignment::Center)?;
+        if let Err(err) = frame.Navigate2(&page_type) {
+            log::error!("Failed to navigate to the page: {:?}", err);
+        }
 
-        stack_panel.Children()?.Append(&title)?;
-        stack_panel.Children()?.Append(&hyperlink)?;
-
-        self.SetContent(&stack_panel)
+        self.SetContent(&frame)
     }
 }
 

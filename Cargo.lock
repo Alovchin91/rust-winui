@@ -251,7 +251,7 @@ checksum = "ed94fce61571a4006852b7389a063ab983c02eb1bb37b47f8272ce92d06d9538"
 [[package]]
 name = "winui3"
 version = "0.106.0"
-source = "git+https://github.com/Alovchin91/winui3-rs.git#0dacc9433507f2dbe10e6521313236f84ed10015"
+source = "git+https://github.com/Alovchin91/winui3-rs.git?tag=winappsdk-v1.6#c810c42c606199faba5749098bfdecff2fec4a03"
 dependencies = [
  "windows",
  "windows-collections",

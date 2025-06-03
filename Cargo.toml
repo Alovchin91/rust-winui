@@ -16,8 +16,9 @@ windows-core = "0.61.2"
 
 [dependencies.winui3]
 git = "https://github.com/Alovchin91/winui3-rs.git"
+tag = "winappsdk-v1.6"
 version = "0.106.0"
-features = ["XamlApp", "UI_Composition"]
+features = ["XamlApp", "XamlNavigation"]
 
 [build-dependencies]
 embed-manifest = "1.4.0"
