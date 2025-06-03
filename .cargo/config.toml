@@ -1,0 +1,6 @@
+[target.'cfg(all(target_os = "windows", target_env = "msvc"))']
+rustflags = [
+    "-Ctarget-feature=+crt-static",
+    "-Clink-arg=/NODEFAULTLIB:libucrt.lib",
+    "-Clink-arg=/DEFAULTLIB:ucrt.lib",
+]
